@@ -1,6 +1,7 @@
 <template>
-  <v-app dark>
+  <v-app>
     <v-navigation-drawer
+      v-if="$route.path !== '/'"
       v-model="drawer"
       :mini-variant="miniVariant"
       :clipped="clipped"
@@ -25,32 +26,17 @@
       </v-list>
     </v-navigation-drawer>
     <v-toolbar
+      color="primary"
       :clipped-left="clipped"
       fixed
       app
     >
-      <v-toolbar-side-icon @click="drawer = !drawer" />
-      <v-btn
-        icon
-        @click.stop="miniVariant = !miniVariant"
-      >
-        <v-icon>{{ `chevron_${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="clipped = !clipped"
-      >
-        <v-icon>web</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="fixed = !fixed"
-      >
-        <v-icon>remove</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title" />
+      <v-toolbar-side-icon class="white--text" v-if="$route.path !== '/'" @click="drawer = !drawer" />
+      <v-toolbar-title class="white--text" v-text="title" />
       <v-spacer />
       <v-btn
+        flat
+        color="white"
         v-if="$route.path !== '/'"
         @click="logout"
       >
@@ -58,6 +44,15 @@
       </v-btn>
     </v-toolbar>
     <v-content>
+      <VAlert
+        :value="loginSucceed"
+        dismissible
+        icon="check_circle"
+        outline
+        color="info"
+      >
+        ログインに成功しました
+      </VAlert>
       <v-container>
         <nuxt />
         <FullScreenSpinner
@@ -97,6 +92,16 @@ export default {
   computed: {
     loading() {
       return this.$store.getters.isLoading
+    },
+    loginSucceed() {
+      return this.$store.getters.loginSucceed
+    }
+  },
+  watch: {
+    $route(to, from) {
+      if (from.path === '/profile') {
+        this.$store.commit('SET_LOGIN_SUCCEED', false)
+      }
     }
   },
   data() {

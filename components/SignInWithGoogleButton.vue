@@ -1,11 +1,13 @@
 <template>
-  <img
-    class="signin-button"
-    :src="signinIcon"
-    @mouseenter="mouseEnter = true"
-    @mouseleave="mouseEnter = false"
-    @click="login"
-  >
+  <div class="centered-img">
+    <img
+      class="signin-button"
+      :src="signinIcon"
+      @mouseenter="mouseEnter = true"
+      @mouseleave="mouseEnter = false"
+      @click="login"
+    >
+  </div>
 </template>
 <script>
 export default {
@@ -31,10 +33,15 @@ export default {
 </script>
 <style lang="scss" scoped>
   .signin-button {
-    height: 50%;
-    width: 50%;
+    height: 100%;
+    width: 100%;
+    max-width: 220px;
+    max-height: 70px;
     &:hover {
       cursor: pointer;
     }
+  }
+  .centered-img {
+    text-align: center;
   }
 </style>

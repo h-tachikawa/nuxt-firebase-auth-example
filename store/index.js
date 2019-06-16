@@ -1,6 +1,7 @@
 export const state = () => ({
   user: null,
-  loading: null
+  loading: null,
+  loginSucceed: false
 })
 
 export const getters = {
@@ -9,6 +10,9 @@ export const getters = {
   },
   isLoading(state) {
     return state.loading
+  },
+  loginSucceed(state) {
+    return state.loginSucceed
   }
 }
 
@@ -21,5 +25,8 @@ export const mutations = {
   },
   SET_LOADING(state, isLoading) {
     state.loading = isLoading
+  },
+  SET_LOGIN_SUCCEED(state, loginSucceed) {
+    state.loginSucceed = loginSucceed
   }
 }

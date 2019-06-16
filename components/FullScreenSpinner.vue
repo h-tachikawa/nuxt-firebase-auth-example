@@ -15,7 +15,7 @@
           justify-center
           align-center
         >
-          <PulseLoader color="#1976D2"></PulseLoader>
+          <PulseLoader color="#43B693"></PulseLoader>
           <h1 v-if="message != null">
             {{ message }}
           </h1>

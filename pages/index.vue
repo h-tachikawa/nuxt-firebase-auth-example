@@ -1,16 +1,14 @@
 <template>
   <VLayout
-    column
+    row
     justify-center
     align-center
   >
     <VFlex
-      xs12
-      sm8
-      md6
+      xs7
     >
       <SignInWithGoogleButton
-        class="mt-3"
+        class="mt-4"
         @signin="handleSignIn"
       />
     </VFlex>
@@ -44,6 +42,7 @@ export default {
         localStorage.setItem('jwt', idToken)
         this.$router.push({ path: '/profile' })
         localStorage.removeItem('redirecting')
+        this.$store.commit('SET_LOGIN_SUCCEED', true)
       }
     }
   },

@@ -1,9 +1,6 @@
-export default function ({ route, redirect }) {
+export default function ({ redirect }) {
   const currentUserIdToken = localStorage.getItem('jwt')
-  if (!currentUserIdToken && route.path !== '/') {
+  if (!currentUserIdToken) {
     redirect('/')
-  }
-  if (currentUserIdToken && route.path === '/') {
-    redirect('/profile')
   }
 }

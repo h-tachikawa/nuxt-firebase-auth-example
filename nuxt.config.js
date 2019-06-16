@@ -23,6 +23,9 @@ export default {
         href:
           'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
       }
+    ],
+    script: [
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.4.4/polyfill.min.js', type: 'text/javascript' }
     ]
   },
   /*
@@ -50,9 +53,6 @@ export default {
     '@nuxtjs/eslint-module'
   ],
   router: {
-    // パスが変更されるたびに以下のミドルウェアが呼び出される
-    middleware: ['auth'],
-    mode: 'hash'
   },
   /*
   ** Axios module configuration
@@ -83,6 +83,10 @@ export default {
     ** You can extend webpack config here
     */
     extend(config, ctx) {
+      config.devtool = 'inline-source-map'
+    },
+    generate: {
+      dir: './dist/'
     }
   }
 }

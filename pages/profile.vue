@@ -10,16 +10,17 @@
       md6
     >
       <VSubheader class="headline">User Profile</VSubheader>
-      <VSubheader>Name: {{ user.displayName }}</VSubheader>
-      <VSubheader>Mail Address: {{ user.email }}</VSubheader>
+      <VSubheader>Name: {{ loggedInUser.displayName }}</VSubheader>
+      <VSubheader>Mail Address: {{ loggedInUser.email }}</VSubheader>
     </VFlex>
   </VLayout>
 </template>
 <script>
 export default {
+  middleware: ['auth'],
   computed: {
-    user() {
-      return this.$store.getters.user
+    loggedInUser() {
+      return this.$store.getters.user || {}
     }
   }
 }

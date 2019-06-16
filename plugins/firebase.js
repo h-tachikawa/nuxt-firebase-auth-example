@@ -24,6 +24,11 @@ export default function (ctx) {
         displayName: user.displayName,
         email: user.email
       })
+    } else {
+      localStorage.removeItem('jwt')
+      localStorage.removeItem('initialized')
+      ctx.store.commit('RESET_USER')
+      ctx.app.router.push('/')
     }
   })
 }

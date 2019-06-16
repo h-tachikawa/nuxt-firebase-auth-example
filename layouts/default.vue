@@ -107,8 +107,8 @@ export default {
       items: [
         {
           icon: 'apps',
-          title: 'Welcome',
-          to: '/'
+          title: 'Profile',
+          to: '/profile'
         },
         {
           icon: 'bubble_chart',
@@ -124,9 +124,7 @@ export default {
   },
   methods: {
     async logout() {
-      localStorage.removeItem('jwt')
       await firebase.auth().signOut()
-      this.$router.push('/')
     }
   }
 }

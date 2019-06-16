@@ -9,6 +9,8 @@
     "precommit": "yarn run lint",
     "test": "jest",
     "dev": "cross-env NODE_ENV=\"local\" nuxt",
+    "build:dev": "cross-env NODE_ENV=\"development\" nuxt build",
+    "deploy:dev": "yarn run build:dev && firebase deploy --only hosting",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate"

@@ -32,19 +32,23 @@ export default {
   },
   async mounted() {
     const isRedirect = !this.$store.getters.user && !localStorage.getItem('jwt')
-    if (isRedirect) {
+    const initialized = localStorage.getItem('initialized')
+    if (isRedirect && initialized) {
       this.$store.commit('SET_LOADING', true)
     }
-    const user = await firebase.auth().getRedirectResult()
+    const userCredential = await firebase.auth().getRedirectResult()
     this.$store.commit('SET_LOADING', false)
-    if (user) {
-      this.$router.push('/profile')
-      return
+    if (userCredential.user && initialized) {
+      const idToken = await userCredential.user.getIdToken()
+      if (idToken) {
+        localStorage.setItem('jwt', idToken)
+        this.$router.push({ path: '/profile' })
+      }
     }
-    this.$store.commit('RESET_USER')
   },
   methods: {
     async handleSignIn() {
+      localStorage.setItem('initialized', 'true')
       await firebase.auth().signInWithRedirect(new firebase.auth.GoogleAuthProvider())
     }
   }

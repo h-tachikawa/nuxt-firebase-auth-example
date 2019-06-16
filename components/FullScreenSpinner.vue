@@ -1,38 +1,38 @@
 <template>
-  <v-layout
+  <VLayout
     row
     justify-center
   >
-    <v-dialog
+    <VDialog
       v-model="value"
       persistent
       content
       content-class="centered-dialog"
     >
-      <v-container fill-height>
-        <v-layout
+      <VContainer fill-height>
+        <VLayout
           column
           justify-center
           align-center
         >
-          <v-progress-circular
-            :size="70"
-            :width="7"
-            :color="progressColor"
-            indeterminate
-          />
+          <PulseLoader color="#1976D2"></PulseLoader>
           <h1 v-if="message != null">
             {{ message }}
           </h1>
-        </v-layout>
-      </v-container>
-    </v-dialog>
-  </v-layout>
+        </VLayout>
+      </VContainer>
+    </VDialog>
+  </VLayout>
 </template>
 
 <script>
+import PulseLoader from 'vue-spinner/src/PulseLoader'
+
 export default {
   name: 'Loading',
+  components: {
+    PulseLoader
+  },
   props: {
     value: { type: Boolean, default: false },
     message: { type: String, default: null },

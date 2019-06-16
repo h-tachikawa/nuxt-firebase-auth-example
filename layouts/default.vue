@@ -31,13 +31,13 @@
       fixed
       app
     >
-      <v-toolbar-side-icon class="white--text" v-if="$route.path !== '/'" @click="drawer = !drawer" />
+      <v-toolbar-side-icon v-if="$route.path !== '/'" class="white--text" @click="drawer = !drawer" />
       <v-toolbar-title class="white--text" v-text="title" />
       <v-spacer />
       <v-btn
+        v-if="$route.path !== '/'"
         flat
         color="white"
-        v-if="$route.path !== '/'"
         @click="logout"
       >
         Logout
@@ -89,21 +89,6 @@ export default {
   components: {
     FullScreenSpinner
   },
-  computed: {
-    loading() {
-      return this.$store.getters.isLoading
-    },
-    loginSucceed() {
-      return this.$store.getters.loginSucceed
-    }
-  },
-  watch: {
-    $route(to, from) {
-      if (from.path === '/profile') {
-        this.$store.commit('SET_LOGIN_SUCCEED', false)
-      }
-    }
-  },
   data() {
     return {
       clipped: false,
@@ -127,7 +112,35 @@ export default {
       title: 'Vuetify.js'
     }
   },
+  computed: {
+    loading() {
+      return this.$store.getters.isLoading
+    },
+    loginSucceed() {
+      return this.$store.getters.loginSucceed
+    }
+  },
+  watch: {
+    $route(to, from) {
+      if (from.path === '/profile') {
+        this.$store.commit('SET_LOGIN_SUCCEED', false)
+      }
+    }
+  },
+  mounted() {
+    document.addEventListener('keydown', this.closeAlert, false)
+  },
+  beforeDestroy() {
+    document.removeEventListener('keydown', this.closeAlert, false)
+  },
   methods: {
+    closeAlert(e) {
+      const keyCode = e.keyCode
+      const ESC = 27
+      if (keyCode === ESC && this.loginSucceed) {
+        this.$store.commit('SET_LOGIN_SUCCEED', false)
+      }
+    },
     async logout() {
       await firebase.auth().signOut()
     }

@@ -22,6 +22,7 @@ import firebase from 'firebase'
 import SignInWithGoogleButton from '~/components/SignInWithGoogleButton'
 
 export default {
+  middleware: ['auth'],
   components: {
     SignInWithGoogleButton
   },
@@ -31,24 +32,28 @@ export default {
     }
   },
   async mounted() {
-    const isRedirect = !this.$store.getters.user && !localStorage.getItem('jwt')
-    const initialized = localStorage.getItem('initialized')
-    if (isRedirect && initialized) {
+    const redirecting = localStorage.getItem('redirecting')
+    if (redirecting) {
       this.$store.commit('SET_LOADING', true)
     }
     const userCredential = await firebase.auth().getRedirectResult()
     this.$store.commit('SET_LOADING', false)
-    if (userCredential.user && initialized) {
+    if (userCredential.user && redirecting) {
       const idToken = await userCredential.user.getIdToken()
       if (idToken) {
         localStorage.setItem('jwt', idToken)
         this.$router.push({ path: '/profile' })
+        localStorage.removeItem('redirecting')
       }
     }
   },
   methods: {
     async handleSignIn() {
-      localStorage.setItem('initialized', 'true')
+      /**
+       * リダイレクトで遷移を挟むとVuexは初期化されてしまうため、
+       * リダイレクトしても消えないLocalStorageにリダイレクト中であるという状態を持たせる。
+       */
+      localStorage.setItem('redirecting', 'true')
       await firebase.auth().signInWithRedirect(new firebase.auth.GoogleAuthProvider())
     }
   }

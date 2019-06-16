@@ -26,7 +26,6 @@ export default function (ctx) {
       })
     } else {
       localStorage.removeItem('jwt')
-      localStorage.removeItem('initialized')
       ctx.store.commit('RESET_USER')
       ctx.app.router.push('/')
     }
